@@ -1,0 +1,13 @@
+#game {
+text-align: center;
+width: 46rem;
+height: 30rem;
+margin: auto;
+border-style: solid;
+}
+
+.textDiv {
+width: 50%;
+float: left;
+height: 2.5rem;
+}
