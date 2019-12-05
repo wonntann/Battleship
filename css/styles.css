@@ -11,3 +11,17 @@ width: 50%;
 float: left;
 height: 2.5rem;
 }
+
+#player {
+ width: 20rem;
+  height: 20rem;
+  display: inline-block;
+border-style: solid;
+  }
+
+#computer {
+ width: 20rem;
+ height: 20rem;
+ float: right;
+ border-style: solid;
+}
