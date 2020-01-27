@@ -58,7 +58,7 @@ $(function() {
             for (var i = 0; i< this.squares.length; i++){
                 var r = this.squares[i][0];
                 var c = this.squares[i][1];
-                /* If a square's calue indicates part of a ship, we  know that the ship is not sunk and returns false */
+                /* If a square's value indicates part of a ship, we  know that the ship is not sunk and returns false */
                 if(this.board[r][c] === "S"){
                     return false;
                 }
