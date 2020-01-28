@@ -1,22 +1,19 @@
-
-$(function()
-{
+$(function() {
     var playerBoard = [];
     var playerShips = [];
     var compBoard = [];
     var compShips = [];
+    var playerTurn = true;
     var compGuessBoard = [];
     init();
 
-    function Ship(name, length, board)
-    {
+    function Ship(name, length, board){
         this.name = name;
         this.sunk = false;
         this.squares = [];
         this.board = board;
 
-        this.place = function()
-        {
+        this.place = function() {
            var placed = false;
            var vertical = Math.round(Math.random()) == 0;
            while(!placed) {
@@ -54,47 +51,53 @@ $(function()
     this.place();
 } /* End function Ship */
 
-      this.checkSunk = function()
-      {
-        for (var i = 0; i < this.squares,length; i++)
-        {
-            var r = this.squares[i][0];
-            var c = this.squares[i][1];
-            if (this.board[r][c] === "S")
-            {
-                return false;
-            }
-          {
-            this.sunk = true;
-            return
-          }
-        }
-        this.sunk = true;
-        return true;
-      }
+      /*#### Add function checkSunk 1/15/20 ##### */
+    /* How to tell if the ship is sunk*/
 
-    function drawBoard(board, player)
-    {
+         this.checkSunk = function(){
+             /* Iterates through the ship's list of quares and checks the cooresponding position in the board */
+            for (var i = 0; i< this.squares.length; i++){
+                var r = this.squares[i][0];
+                var c = this.squares[i][1];
+                /* If a square's value indicates part of a ship, we  know that the ship is not sunk and returns false */
+                if(this.board[r][c] === "S"){
+                    return false;
+                }
+            }
+             /* If the loop completes, we know that the ship is sunk and can set the ship's sunk variable to true and return true. */
+            this.sunk = true;
+            return true;
+         }
+}
+
+    function drawBoard(board, player) {
         for (var i = 0; i < board.length; i++) {
-            for (var j = 0; j < board[i].length; j++)
-            {
+            for (var j = 0; j < board[i].length; j++) {
                 var color = "#1AD1FF";
-                if(board[i][j] == "S" && player === "player")
-                {
+                if(board[i][j] == "S" && player === "player") {
                     color = "gray";
-                }
-                else if (board[i][j] == "H")
-                {
-                color = "E60000";
-                }
-                else if (board[i][j] == "W")
-                {
-                color = "FFFFLA";
+                } /* Use different colors to indicate hits and misses */
+                else if(board[i][j] == "H"){
+                    color = "#e60000";
+                }else if(board[i][j] == "M"){
+                    color = "#ffff1a";
                 }
                 $("#" + player + " > #" + i + "_" + j).css("background-color", color);
             }
         }
     }
+/* Function to see checkWon */
+    function checkWon(ships){
+        for(var i = 0; i< ships.length; i++){
+            if(!ships[i].sunk){
+                return false;
+            }
+        }
+        return true;
+    }
+
+/* Function compTurn for computer turn */
+
 
     function init() {
         playerBoard = [];
@@ -132,12 +135,32 @@ $(function()
 
             drawBoard(playerBoard, "player");
 
-            // Click Event
-            $("#computer > .gridsquare").click(function())
-            {
+            /* Click Event on class gridSquare */
+            $("#computer > .gridsquare").click(function(){
                 var id = $(this).attr("id").split("_");
-                var r = parse/int(id[0]);
-                var c = parse/int(id[1]);
-            });
-        }
-});
+                var r = parseInt(id[0]);
+                var c = parseInt(id[1]);
+                /******#### END 1/22 ####*****/
+                if(compBoard[r][c] === "H" || compBoard[r][c] === "M"){
+                    return;
+                }
+                if(compBoard[r][c] === "S"){
+                    compBoard[r][c] = "H";
+                    $('#ctext').html("Hit!");
+                    for(var i =0; i< compShips.length; i++){
+                        if(!compShips[i].sunk && compShips[i].checkSunk()){
+                            $('#ctext').html("You sunk my "+compShips[i].name+"!");
+                            break;
+                        }
+                      }
+                    }else{
+                        compBoard[r][c] = "M";
+                        $('#ctext').html("Miss!");
+                        }
+                    drawBoard(compBoard, "computer");
+                    if(checkWon(compShips)){
+                        $("#main-text").html("You win!")
+                    }
+                });
+            }
+    });
